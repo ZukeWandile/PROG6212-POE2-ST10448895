@@ -80,6 +80,34 @@ namespace ST10448895_CMCS_PROG.Controllers
             return RedirectToAction("Approve");
         }
 
+        public IActionResult Reports()
+        {
+            if (!IsManager())
+                return RedirectToAction("Index", "Login");
+
+            var claims = _context.Claims.ToList();
+
+            var model = new ReportsViewModel
+            {
+                TotalClaims = claims.Count,
+                TotalAmount = claims.Sum(c => c.TotalAmount),
+                ApprovedAmount = claims.Where(c => c.Approved).Sum(c => c.TotalAmount),
+                ClaimsByMonth = claims
+                    .GroupBy(c => c.SubmitDate.ToString("MMMM yyyy"))
+                    .Select(g => new MonthlyReportData
+                    {
+                        Month = g.Key,
+                        Count = g.Count(),
+                        Amount = g.Sum(c => c.TotalAmount)
+                    })
+                    .OrderByDescending(m => DateTime.Parse("01 " + m.Month))
+                    .ToList()
+            };
+
+            return View(model);
+        }
+
+
         // Secure download + decryption
         public IActionResult DownloadDocument(int id)
         {
