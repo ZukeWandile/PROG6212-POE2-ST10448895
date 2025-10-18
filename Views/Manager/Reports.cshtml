@@ -1,0 +1,69 @@
+﻿@{
+    ViewData["Title"] = "Reports";
+    var reportData = Model;
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Claims Reports</h2>
+        <a asp-action="Index" class="btn btn-secondary">Back to Dashboard</a>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h3>@reportData.TotalClaims</h3>
+                    <p>Total Claims</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h3>@reportData.TotalAmount.ToString("C0")</h3>
+                    <p>Total Value</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h3>@reportData.ApprovedAmount.ToString("C0")</h3>
+                    <p>Approved Payments</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Monthly Breakdown -->
+    <div class="card">
+        <div class="card-header">
+            <h5>Monthly Breakdown</h5>
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Month</th>
+                        <th>Claims</th>
+                        <th>Total Amount</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var month in reportData.ClaimsByMonth)
+                    {
+                        <tr>
+                            <td>@month.Month</td>
+                            <td>@month.Count</td>
+                            <td>@month.Amount.ToString("C")</td>
+                           
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
