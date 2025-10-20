@@ -16,6 +16,7 @@ namespace ST10448895_CMCS_PROG.Data
         public DbSet<ClaimModel> Claims { get; set; }
         public DbSet<ApprovalModel> Approvals { get; set; }
         public DbSet<UploadDocumentModel> UploadDocuments { get; set; }
+        public DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
